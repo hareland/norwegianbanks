@@ -5,8 +5,13 @@ namespace Ariselseng\NorwegianBanks\Tests;
 use Ariselseng\NorwegianBanks\NorwegianBanks;
 use Ariselseng\NorwegianBanks\NorwegianBanksStatic;
 
-class NorwegianBanksTest extends \PHPUnit_Framework_TestCase
+class NorwegianBanksTest extends \PHPUnit\Framework\TestCase
 {
+    private $norwegianBanks;
+    protected $notRealAccountNumber = '1234.56.78903';
+    protected $notRealAccountNumberWithSpaces = '1234 56 78903';
+    protected $notRealAccountNumberUnformatted = '12345678903';
+
     protected $accounts = [
         [
             'bankCode' => 'DNBANOKK',
@@ -21,13 +26,9 @@ class NorwegianBanksTest extends \PHPUnit_Framework_TestCase
             'number' => '3000.27.79419'
         ],
     ];
-    protected $notRealAccountNumber = '1234.56.78903';
-    protected $notRealAccountNumberWithSpaces = '1234 56 78903';
-    protected $notRealAccountNumberUnformatted = '12345678903';
 
-    private $norwegianBanks;
 
-    public function __construct()
+    public function setUp()
     {
         $this->norwegianBanks = new NorwegianBanks();
     }

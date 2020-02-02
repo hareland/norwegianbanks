@@ -1,5 +1,7 @@
 {
     "name": "ariselseng/norwegianbanks",
+    "license": "MIT",
+    "version": "0.5",
     "autoload": {
         "psr-4": {
             "Ariselseng\\NorwegianBanks\\": "src/"
@@ -12,7 +14,7 @@
         "guzzlehttp/guzzle": "^6.5"
     },
     "require-dev": {
-        "phpunit/phpunit": "4.*"
+        "phpunit/phpunit": "~7.0"
     },
     "autoload-dev": {
         "psr-4": {
