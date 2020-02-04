@@ -1,13 +1,16 @@
 {
     "name": "ariselseng/norwegianbanks",
+    "description": "Library to get information about norwegian banks and validate accounts",
     "license": "MIT",
     "version": "0.5",
+    "minimum-stability": "stable",
     "autoload": {
         "psr-4": {
             "Ariselseng\\NorwegianBanks\\": "src/"
         }
     },
     "require": {
+        "php": ">=7.4",
         "phpoffice/phpspreadsheet": "^1.9",
         "komakino/modulus11": "^1.0",
         "desarrolla2/cache": "^3.0",
