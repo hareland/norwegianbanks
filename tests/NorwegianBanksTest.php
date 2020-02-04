@@ -69,4 +69,11 @@ class NorwegianBanksTest extends TestCase
         $this->assertFalse($this->norwegianBanks->validateAccountNumber($this->notRealAccountNumber));
 
     }
+
+    public function testGetAllPrefixes() {
+        $prefixes = $this->norwegianBanks->getAllPrefixes();
+        $this->assertIsArray($prefixes);
+        $this->assertNotContains('Bank identifier', $prefixes);
+        $this->assertContains('1594', $prefixes);
+    }
 }

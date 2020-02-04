@@ -71,10 +71,16 @@ class NorwegianBanks
             $spreadsheet = $reader->load($this->xlsFilePath);
             $worksheet = $spreadsheet->getActiveSheet();
             $rows = $worksheet->toArray(null, false, false, false);
+            $startKey = 1;
 
-            for ($i = 0; $i < count($rows); $i++) {
+            // handle if header row is missing
+            if (preg_match("/^\d{4}$/", $rows[0][0])) {
+                $startKey = 0;
+            }
+
+            for ($i = $startKey; $i < count($rows); $i++) {
                 if (is_null($rows[$i][1])) {
-                    continue;
+                    $rows[$i][1] = "n/a";
                 }
                 if (!isset($banks[$rows[$i][1]])) {
                     $banks[$rows[$i][1]] = new NorwegianBank($rows[$i][1], $rows[$i][2], [$rows[$i][0]]);
@@ -130,6 +136,11 @@ class NorwegianBanks
         }
 
         return !is_null($this->getBankByAccountNumber(substr($account, 0, 4)));
+    }
+
+    public function getAllPrefixes()
+    {
+        return array_keys($this->prefixToBankCode);
     }
 }
 
