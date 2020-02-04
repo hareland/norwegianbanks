@@ -76,4 +76,10 @@ class NorwegianBanksTest extends TestCase
         $this->assertNotContains('Bank identifier', $prefixes);
         $this->assertContains('1594', $prefixes);
     }
+
+    public function testGetAllBanks() {
+        $banks = $this->norwegianBanks->getAllBanks();
+        $this->assertContainsOnlyInstancesOf('Ariselseng\NorwegianBanks\NorwegianBank', $banks);
+        $this->assertArrayHasKey($this->accounts[0]['bankCode'], $banks);
+    }
 }

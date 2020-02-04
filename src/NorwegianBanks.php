@@ -142,6 +142,11 @@ class NorwegianBanks
     {
         return array_keys($this->prefixToBankCode);
     }
+
+    public function getAllBanks()
+    {
+        return $this->banks;
+    }
 }
 
 class NorwegianBanksStatic

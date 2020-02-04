@@ -2,7 +2,7 @@
     "name": "ariselseng/norwegianbanks",
     "description": "Library to get information about norwegian banks and validate accounts",
     "license": "MIT",
-    "version": "0.5",
+    "version": "0.6",
     "minimum-stability": "stable",
     "autoload": {
         "psr-4": {
