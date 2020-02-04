@@ -4,8 +4,9 @@ namespace Ariselseng\NorwegianBanks\Tests;
 
 use Ariselseng\NorwegianBanks\NorwegianBanks;
 use Ariselseng\NorwegianBanks\NorwegianBanksStatic;
+use PHPUnit\Framework\TestCase;
 
-class NorwegianBanksTest extends \PHPUnit\Framework\TestCase
+class NorwegianBanksTest extends TestCase
 {
     private $norwegianBanks;
     protected $notRealAccountNumber = '1234.56.78903';
@@ -36,19 +37,15 @@ class NorwegianBanksTest extends \PHPUnit\Framework\TestCase
     public function testGetFormattedAccountNumber()
     {
         $this->assertEquals($this->notRealAccountNumber, $this->norwegianBanks->getFormattedAccountNumber($this->notRealAccountNumberUnformatted));
-        $this->assertEquals($this->notRealAccountNumber, NorwegianBanksStatic::getFormattedAccountNumber($this->notRealAccountNumberUnformatted));
         $this->assertEquals($this->notRealAccountNumberWithSpaces, $this->norwegianBanks->getFormattedAccountNumber($this->notRealAccountNumberUnformatted, ' '));
-        $this->assertEquals($this->notRealAccountNumberWithSpaces, NorwegianBanksStatic::getFormattedAccountNumber($this->notRealAccountNumberUnformatted, ' '));
     }
 
     public function testGetBankCodeByPrefix()
     {
         foreach ($this->accounts as $account) {
             $this->assertEquals($account['bankCode'], $this->norwegianBanks->getBankCodeByPrefix(substr($account['number'], 0, 4)));
-            $this->assertEquals($account['bankCode'], NorwegianBanksStatic::getBankCodeByPrefix(substr($account['number'], 0, 4)));
         }
         $this->assertEquals(null, $this->norwegianBanks->getBankCodeByPrefix('0000'));
-        $this->assertEquals(null, NorwegianBanksStatic::getBankCodeByPrefix('0000'));
     }
 
     public function testGetBankByAccountNumber()
@@ -60,7 +57,6 @@ class NorwegianBanksTest extends \PHPUnit\Framework\TestCase
         }
 
         $this->assertEquals(null, $this->norwegianBanks->getBankByAccountNumber($this->notRealAccountNumber));
-        $this->assertEquals(null, NorwegianBanksStatic::getBankByAccountNumber($this->notRealAccountNumber));
     }
 
     public function testValidate()
@@ -68,12 +64,9 @@ class NorwegianBanksTest extends \PHPUnit\Framework\TestCase
 
         foreach ($this->accounts as $account) {
             $this->assertTrue($this->norwegianBanks->validateAccountNumber($account['number']));
-            $this->assertTrue(NorwegianBanksStatic::validateAccountNumber($account['number']));
-
         }
 
         $this->assertFalse($this->norwegianBanks->validateAccountNumber($this->notRealAccountNumber));
-        $this->assertFalse(NorwegianBanksStatic::validateAccountNumber($this->notRealAccountNumber));
 
     }
 }
