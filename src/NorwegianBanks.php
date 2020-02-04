@@ -24,13 +24,15 @@ class NorwegianBanks
     {
 
         $xlsFileExists = file_exists($this->xlsFilePath);
-        if ($xlsFileExists && filemtime($this->xlsFilePath) <= (time() - self::xlsFileTtl)) {
+        $xlsFileMTime = $xlsFileExists ? filemtime($this->xlsFilePath) : 0;
+        $xlsTooOld = $xlsFileMTime <= (time() - self::xlsFileTtl);
+
+        if ($xlsFileExists && $xlsTooOld) {
             $headers = [
-                'If-Modified-Since' => gmdate('D, d M Y H:i:s T', filemtime($this->xlsFilePath)),
+                'If-Modified-Since' => gmdate('D, d M Y H:i:s T', $xlsFileMTime),
             ];
         } else if (!$xlsFileExists) {
             $headers = null;
-            
         } else {
             return;
         }
@@ -41,6 +43,8 @@ class NorwegianBanks
 
         if ($response->getStatusCode() === 200 && $response->getBody()->getSize() > 0) {
             file_put_contents($this->xlsFilePath, $response->getBody()->getContents(), LOCK_EX);
+        } else if ($response->getStatusCode() === 304) {
+            touch($this->xlsFilePath);
         }
     }
 
