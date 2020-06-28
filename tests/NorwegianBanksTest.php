@@ -12,6 +12,7 @@ class NorwegianBanksTest extends TestCase
     protected $notRealAccountNumber = '1234.56.78903';
     protected $notRealAccountNumberWithSpaces = '1234 56 78903';
     protected $notRealAccountNumberUnformatted = '12345678903';
+    protected $accountNumberWithZeroCheckDigit = '0101.01.04900';
 
     protected $accounts = [
         [
@@ -67,6 +68,7 @@ class NorwegianBanksTest extends TestCase
         }
 
         $this->assertFalse($this->norwegianBanks->validateAccountNumber($this->notRealAccountNumber));
+        $this->assertTrue($this->norwegianBanks->validateAccountNumber($this->accountNumberWithZeroCheckDigit, false));
 
     }
 

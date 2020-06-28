@@ -2,7 +2,6 @@
 
 namespace Ariselseng\NorwegianBanks;
 
-use Komakino\Modulus11\Modulus11;
 use Desarrolla2\Cache\File as FileCache;
 
 class NorwegianBanks
@@ -102,6 +101,7 @@ class NorwegianBanks
             $this->prefixToBankCode = $cache->get('prefixToBankCode');
         }
     }
+
     public function getBankCodeByPrefix(string $prefix)
     {
 
@@ -127,15 +127,40 @@ class NorwegianBanks
         return substr($onlyDigits, 0, 4) . $delimiter . substr($onlyDigits, 4, 2) . $delimiter . substr($onlyDigits, 6);
     }
 
-    public function validateAccountNumber(string $account)
+    public function validateAccountNumber(string $account, bool $validateBankPrefix = true)
     {
-        $mod11 = Modulus11::validate($account);
 
-        if (!$mod11) {
+        $weights = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2];
+        $onlyDigits = preg_replace('/[^0-9]/', '', $account);
+
+        if (strlen($onlyDigits) !== 11) {
             return false;
         }
 
-        return !is_null($this->getBankByAccountNumber(substr($account, 0, 4)));
+        $checkDigit = (int)substr($onlyDigits, -1, 1);
+
+        $sum = 0;
+        for ($i = 0; $i < 10; $i++) {
+            $sum += (int)substr($onlyDigits, $i, 1) * $weights[$i];
+        }
+
+        $remainder = $sum % 11;
+
+        if ($remainder === 0) {
+            $checkDigitFromRemainder = $remainder;
+        } else {
+            $checkDigitFromRemainder = 11 - $remainder;
+        }
+
+        if ($checkDigit !== $checkDigitFromRemainder) {
+            return false;
+        }
+
+        if (!$validateBankPrefix) {
+            return true;
+        }
+
+        return !is_null($this->getBankByAccountNumber(substr($onlyDigits, 0, 4)));
     }
 
     public function getAllPrefixes()
