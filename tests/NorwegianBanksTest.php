@@ -8,13 +8,13 @@ use PHPUnit\Framework\TestCase;
 
 class NorwegianBanksTest extends TestCase
 {
-    private $norwegianBanks;
-    protected $notRealAccountNumber = '1234.56.78903';
-    protected $notRealAccountNumberWithSpaces = '1234 56 78903';
-    protected $notRealAccountNumberUnformatted = '12345678903';
-    protected $accountNumberWithZeroCheckDigit = '0101.01.04900';
+    private NorwegianBanks $norwegianBanks;
+    protected string $notRealAccountNumber = '1234.56.78903';
+    protected string $notRealAccountNumberWithSpaces = '1234 56 78903';
+    protected string $notRealAccountNumberUnformatted = '12345678903';
+    protected string $accountNumberWithZeroCheckDigit = '0101.01.04900';
 
-    protected $accounts = [
+    protected array $accounts = [
         [
             'bankCode' => 'DNBANOKK',
             'number' => '1594 22 87248'
@@ -53,8 +53,8 @@ class NorwegianBanksTest extends TestCase
     {
 
         foreach ($this->accounts as $account) {
-            $this->assertAttributeEquals($account['bankCode'], 'bankCode', $this->norwegianBanks->getBankByAccountNumber($account['number']));
-            $this->assertAttributeEquals($account['bankCode'], 'bankCode', NorwegianBanksStatic::getBankByAccountNumber($account['number']));
+            $this->assertEquals($account['bankCode'],  $this->norwegianBanks->getBankByAccountNumber($account['number'])->bankCode);
+            $this->assertEquals($account['bankCode'], NorwegianBanksStatic::getBankByAccountNumber($account['number'])->bankCode);
         }
 
         $this->assertEquals(null, $this->norwegianBanks->getBankByAccountNumber($this->notRealAccountNumber));
@@ -75,8 +75,10 @@ class NorwegianBanksTest extends TestCase
     public function testGetAllPrefixes() {
         $prefixes = $this->norwegianBanks->getAllPrefixes();
         $this->assertIsArray($prefixes);
-        $this->assertNotContains('Bank identifier', $prefixes);
-        $this->assertContains('1594', $prefixes);
+        $this->assertNotCount(0, $prefixes);
+        $this->assertContainsOnly('string', $prefixes);
+        $this->assertFalse(in_array('Bank identifier', $prefixes, true));
+        $this->assertTrue(in_array('1594', $prefixes, true));
     }
 
     public function testGetAllBanks() {

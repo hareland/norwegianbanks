@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3973d7f39e3bbc6d36da295d619e5b04",
+    "content-hash": "f8e17f9feccc9d102e2a6d974e231e95",
     "packages": [
         {
             "name": "desarrolla2/cache",

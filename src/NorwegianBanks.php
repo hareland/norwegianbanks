@@ -165,7 +165,7 @@ class NorwegianBanks
 
     public function getAllPrefixes()
     {
-        return array_keys($this->prefixToBankCode);
+        return array_map('strval', array_keys($this->prefixToBankCode));
     }
 
     public function getAllBanks()
