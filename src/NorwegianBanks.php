@@ -102,6 +102,10 @@ class NorwegianBanks
         }
     }
 
+    /**
+     * @param string $prefix
+     * @return string|null
+     */
     public function getBankCodeByPrefix(string $prefix)
     {
 
@@ -111,6 +115,10 @@ class NorwegianBanks
         return $this->prefixToBankCode[$prefix];
     }
 
+    /**
+     * @param string $account
+     * @return NorwegianBank|null
+     */
     public function getBankByAccountNumber(string $account)
     {
         $prefix = substr($account, 0, 4);
@@ -121,12 +129,22 @@ class NorwegianBanks
         return $this->banks[$this->getBankCodeByPrefix($prefix)];
     }
 
+    /**
+     * @param string $unformattedAccount
+     * @param string $delimiter
+     * @return string
+     */
     public function getFormattedAccountNumber(string $unformattedAccount, string $delimiter = '.')
     {
         $onlyDigits = preg_replace('/[^0-9]/', '', $unformattedAccount);
         return substr($onlyDigits, 0, 4) . $delimiter . substr($onlyDigits, 4, 2) . $delimiter . substr($onlyDigits, 6);
     }
 
+    /**
+     * @param string $account
+     * @param bool $validateBankPrefix
+     * @return bool
+     */
     public function validateAccountNumber(string $account, bool $validateBankPrefix = true)
     {
 
@@ -163,11 +181,17 @@ class NorwegianBanks
         return !is_null($this->getBankByAccountNumber(substr($onlyDigits, 0, 4)));
     }
 
+    /**
+     * @return string[]
+     */
     public function getAllPrefixes()
     {
         return array_map('strval', array_keys($this->prefixToBankCode));
     }
 
+    /**
+     * @return NorwegianBank[]|null
+     */
     public function getAllBanks()
     {
         return $this->banks;
