@@ -3,6 +3,7 @@
 namespace Ariselseng\NorwegianBanks;
 
 use Desarrolla2\Cache\File as FileCache;
+use GuzzleHttp\Exception\BadResponseException;
 
 class NorwegianBanks
 {
@@ -35,10 +36,18 @@ class NorwegianBanks
         } else {
             return;
         }
+        try {
+            $response = (new \GuzzleHttp\Client())->get(self::XlsFileUrl, [
+                'headers' => $headers,
+            ]);
+        } catch (BadResponseException $e) {
+            // handle file exists but there is an error at the server.
+            if ($xlsFileExists) {
+                return;
+            }
+            throw $e;
+        }
 
-        $response = (new \GuzzleHttp\Client())->get(self::XlsFileUrl, [
-            'headers' => $headers,
-        ]);
 
         if ($response->getStatusCode() === 200 && $response->getBody()->getSize() > 0) {
             file_put_contents($this->xlsFilePath, $response->getBody()->getContents(), LOCK_EX);
