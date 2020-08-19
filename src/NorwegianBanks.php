@@ -6,8 +6,8 @@ use Desarrolla2\Cache\File as FileCache;
 
 class NorwegianBanks
 {
-    private const XlsFileUrl = 'https://www.finansnorge.no/contentassets/cc4fabf26cea4569aa447aa9ae671efa/norwegian-iban-bic-table.xls';
-    private const xlsFileTtl = 1440;
+    private const XlsFileUrl = 'https://www.bits.no/document/iban/';
+    private const xlsFileTtl = 86400;
 
     private $xlsFilePath;
     private $banks;
@@ -15,7 +15,7 @@ class NorwegianBanks
 
     public function __construct()
     {
-        $this->xlsFilePath = sys_get_temp_dir() . '/.cache-norwegianbanks-norwegian-iban-bic-table.xls';
+        $this->xlsFilePath = sys_get_temp_dir() . '/.cache-norwegianbanks-norwegian-iban-bic-table.xlsx';
         $this->processData();
     }
 
@@ -64,7 +64,7 @@ class NorwegianBanks
         if (!$hasCacheDir || !isset($banks)) {
             $banks = [];
             $prefixToBankCode = [];
-            $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader("Xls");
+            $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader("Xlsx");
             $reader->setReadDataOnly(true);
 
             $spreadsheet = $reader->load($this->xlsFilePath);
