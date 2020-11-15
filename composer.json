@@ -1,5 +1,5 @@
 {
-    "name": "ariselseng/norwegianbanks",
+    "name": "hareland/norwegianbanks",
     "description": "Library to get information about norwegian banks and validate accounts",
     "license": "MIT",
     "minimum-stability": "stable",
